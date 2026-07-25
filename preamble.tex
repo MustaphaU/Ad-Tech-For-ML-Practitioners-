@@ -1,0 +1,192 @@
+% ─── COLORS ────────────────────────────────────────────────
+\usepackage{xcolor}
+\definecolor{chaptercolor}{HTML}{1a5276}
+\definecolor{sectioncolor}{HTML}{2c3e50}
+\definecolor{linkcolor}{HTML}{2471a3}
+\definecolor{codebg}{HTML}{f8f8f8}
+\definecolor{codeborder}{HTML}{d0d0d0}
+\definecolor{blockquotebg}{HTML}{eef6fc}
+\definecolor{blockquoteborder}{HTML}{3498db}
+\definecolor{tablerule}{HTML}{d0d0d0}
+
+% ─── HEADINGS ──────────────────────────────────────────────
+\usepackage{titlesec}
+
+% Chapter heading style
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\sffamily\color{chaptercolor}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{30pt}
+
+% Section styles
+\titleformat{\section}
+  {\normalfont\Large\bfseries\sffamily\color{sectioncolor}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\sffamily\color{sectioncolor}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\sffamily\color{sectioncolor}}
+  {\thesubsubsection}{1em}{}
+
+% ─── CODE BLOCKS ───────────────────────────────────────────
+% Pandoc's template already loads: fancyvrb, framed, color
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+
+% Override Pandoc's Shaded environment with tcolorbox (deferred to \begin{document})
+\AtBeginDocument{%
+  \renewenvironment{Shaded}{%
+    \begin{tcolorbox}[
+      colback=codebg,
+      colframe=codeborder,
+      boxrule=0.4pt,
+      arc=2pt,
+      left=6pt,
+      right=6pt,
+      top=4pt,
+      bottom=4pt,
+      before skip=10pt,
+      after skip=10pt,
+      breakable,
+      enhanced jigsaw,
+    ]%
+  }{%
+    \end{tcolorbox}%
+  }%
+}
+
+% Style verbatim blocks (unlabeled code = ASCII diagrams) with matching tcolorbox
+\usepackage{fvextra}
+\fvset{fontsize=\small, breaklines=true, breaksymbol={}}
+
+\BeforeBeginEnvironment{verbatim}{%
+  \begin{tcolorbox}[
+    colback=codebg,
+    colframe=codeborder,
+    boxrule=0.4pt,
+    arc=2pt,
+    left=6pt,
+    right=6pt,
+    top=4pt,
+    bottom=4pt,
+    before skip=10pt,
+    after skip=10pt,
+    breakable,
+    enhanced jigsaw,
+  ]%
+}
+\AfterEndEnvironment{verbatim}{\end{tcolorbox}}
+
+% ─── BLOCKQUOTES ───────────────────────────────────────────
+% Restyle blockquotes (pandoc uses quote environment)
+\usepackage{etoolbox}
+\AtBeginEnvironment{quote}{%
+  \begin{tcolorbox}[
+    colback=blockquotebg,
+    colframe=blockquoteborder,
+    boxrule=0pt,
+    leftrule=2pt,
+    arc=0pt,
+    left=10pt,
+    right=10pt,
+    top=6pt,
+    bottom=6pt,
+    before skip=10pt,
+    after skip=10pt,
+    breakable,
+    enhanced jigsaw,
+  ]%
+  \itshape
+}
+\AtEndEnvironment{quote}{\end{tcolorbox}}
+
+% ─── TABLES ────────────────────────────────────────────────
+% booktabs, longtable, array are already loaded by Pandoc's template
+% Do NOT redefine \toprule/\midrule/\bottomrule — let booktabs work as designed
+\usepackage{colortbl}
+\arrayrulecolor{tablerule}
+
+% ─── HEADERS AND FOOTERS ──────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\leftmark}
+\fancyhead[R]{\small\sffamily ML \& RL for Bidding}
+\fancyfoot[C]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Plain style for chapter pages
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyfoot[C]{\small\sffamily\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% ─── HYPERLINKS ────────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkcolor,
+  urlcolor=linkcolor,
+  citecolor=linkcolor,
+  pdftitle={ML and RL for Bidding and Allocation in Online Advertising},
+  pdfauthor={Nima Rafiee},
+  bookmarksnumbered=true,
+}
+
+% ─── TABLE OF CONTENTS ────────────────────────────────────
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\huge\bfseries\sffamily\color{chaptercolor}}
+\renewcommand{\cftchapfont}{\bfseries\sffamily\color{chaptercolor}}
+\renewcommand{\cftsecfont}{\sffamily}
+\setlength{\cftbeforesecskip}{2pt}
+
+% ─── MISC ──────────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist{itemsep=2pt, parsep=2pt}
+
+% ─── UNICODE SYMBOL FALLBACKS ─────────────────────────────
+% Some text fonts (notably Palatino Italic) lack arrow glyphs, so a literal
+% U+2192 in prose silently vanishes from the rendered PDF (xelatex only emits
+% a "Missing character" warning, not an error). Route the arrow family through
+% math mode, which always has these glyphs regardless of the surrounding text
+% font, so arrows render consistently in upright, italic, and bold contexts.
+\usepackage{newunicodechar}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{⇒}{\ensuremath{\Rightarrow}}
+\newunicodechar{⇐}{\ensuremath{\Leftarrow}}
+\newunicodechar{⇔}{\ensuremath{\Leftrightarrow}}
+\newunicodechar{↦}{\ensuremath{\mapsto}}
+
+% ─── CUSTOM TITLE PAGE ────────────────────────────────────
+\AtBeginDocument{%
+  \begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    {\fontsize{32}{38}\selectfont\bfseries\sffamily\color{chaptercolor}
+     ML and RL for Bidding and\\[6pt]
+     Allocation in Online Advertising\par}
+    \vspace{1.5cm}
+    {\Large\sffamily A Two-Week Intensive Textbook\par}
+    \vspace{3cm}
+    {\LARGE\sffamily\bfseries Nima Rafiee\par}
+    \vspace{1cm}
+    {\large\sffamily\color{sectioncolor} 2026\par}
+    \vfill
+    {\small\sffamily\color{gray}
+     Covering auction theory, CTR prediction, bid optimization,\\
+     reinforcement learning for bidding, budget pacing,\\
+     multi-agent systems, and production deployment.\par}
+    \vspace{1cm}
+  \end{titlepage}
+  \setcounter{page}{1}
+}
+
+% Fix for pandoc CSLReferences
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{CSLReferences}[2]{}{}

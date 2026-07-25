@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Build artifacts
+combined_for_pdf.md
+mermaid_images/
+
+# Legacy LaTeX diagrams (superseded by Mermaid)
+diagrams/
+
+# Private material (not part of the published book)
+chapter_14_*.md
+*.pptx
